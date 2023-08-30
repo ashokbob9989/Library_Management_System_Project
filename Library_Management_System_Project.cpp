@@ -28,7 +28,6 @@ void Library::menu()
 {
     to_return:
 
-    system("cls"); // to clear the screen
     int option;
     cout << "\n\n\t\t\t=====Library Management System======";
     cout << "===============================================================\n\n\n";
@@ -66,13 +65,15 @@ void Library::menu()
             cout << "\n\nenter correct option\n\n";
     }
 
-    getchar();
-    goto to_return;
+    string s;
+    cout<<"Do you want to continue? (yes/YES) for continue : ";
+    cin>>s;
+    if(s=="yes" || s=="YES") goto to_return;
+    else return;
 }
 
 void Library::insert_book()
 {
-    system("cls");
     cout << "\n\n\t\t\t=====Library Management System======";
     cout << "===============================================================\n\n\n";
 
@@ -108,7 +109,6 @@ void Library::insert_book()
 
 void Library::search_book()
 {
-    system("cls");
     int temp_id;
     int fg = 0;
 
@@ -129,7 +129,7 @@ void Library::search_book()
         {
             if (temp_id == ptr->book_id)
             {
-                system("cls");
+        
                 cout << "\n\n\t\t\t=====Library Management System======";
                 cout << "===============================================================\n\n\n";
 
@@ -151,7 +151,6 @@ void Library::search_book()
 
 void Library::update_book()
 {
-    system("cls");
     int temp, fg = 0;
 
     cout << "\n\n\t\t\t=====Library Management System======";
@@ -172,7 +171,7 @@ void Library::update_book()
         {
             if (temp == ptr->book_id)
             {
-                system("cls");
+        
                 cout << "\n\n\t\t\t=====Library Management System======";
                 cout << "===============================================================\n\n\n";
 
@@ -250,7 +249,6 @@ void Library::delete_book()
 
 void Library::display_book()
 {
-    system("cls");
     cout << "\n\n\t\t\t=====Library Management System======";
     cout << "===============================================================\n\n\n";
     if (head == NULL)
