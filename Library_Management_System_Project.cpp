@@ -3,67 +3,67 @@ using namespace std;
 
 class Library
 {
-private:
-    struct Node
-    {
-        int book_id;
-        int book_price;
-        string book_name;
-        string book_author;
-        string book_publisher;
-        Node *link;
-    };
-
-public:
-    Node *head = NULL;
-    void menu();
-    void insert_book();
-    void search_book();
-    void update_book();
-    void delete_book();
-    void display_book();
+    private:
+        struct Node
+        {
+            int book_id;
+            int book_price;
+            string book_name;
+            string book_author;
+            string book_publisher;
+            Node *link;
+        };
+    
+    public:
+        Node *head = NULL;
+        void menu();
+        void insert_book();
+        void search_book();
+        void update_book();
+        void delete_book();
+        void display_book();
 };
 
 void Library::menu()
 {
-to_return:
+    to_return:
 
     system("cls"); // to clear the screen
     int option;
     cout << "\n\n\t\t\t=====Library Management System======";
     cout << "===============================================================\n\n\n";
-    cout << "\n\n 1.insert\t\t2.search\t\t3.update\t\t4.delete\t\t5.desplay\t\t6.exit\n";
+    cout << "\n\n 1.insert\t\t2.search\t\t3.update\t\t4.delete\t\t5.display\t\t6.exit\n";
     cout << "enter your option: ";
     cin >> option;
 
     switch (option)
     {
-    case 1:
-        insert_book();
-        break;
-
-    case 2:
-        search_book();
-        break;
-
-    case 3:
-        update_book();
-        break;
-
-    case 4:
-        delete_book();
-        break;
-
-    case 5:
-        // sort_books();
-        display_book();
-        break;
-
-    case 6:
-        exit(0);
-
-    default:
-        cout << "\n\nenter correct option\n\n";
+        case 1:
+            insert_book();
+            break;
+    
+        case 2:
+            search_book();
+            break;
+    
+        case 3:
+            update_book();
+            break;
+    
+        case 4:
+            delete_book();
+            break;
+    
+        case 5:
+            // sort_books();
+            display_book();
+            break;
+    
+        case 6:
+            exit(0);
+    
+        default:
+            cout << "\n\nenter correct option\n\n";
     }
 
     getchar();
@@ -133,14 +133,16 @@ void Library::search_book()
                 cout << "\n\n\t\t\t=====Library Management System======";
                 cout << "===============================================================\n\n\n";
 
+                cout<<" Book is present and the details are : "<<endl;
                 cout << "book id is :" << ptr->book_id << endl;
                 cout << "book price is :" << ptr->book_price << endl;
                 cout << "book price is :" << ptr->book_name << endl;
                 cout << "book price is :" << ptr->book_author << endl;
                 cout << "book price is :" << ptr->book_publisher << endl;
                 fg++;
+                break;
             }
-            ptr = ptr->link;
+            else ptr = ptr->link;
         }
         if (fg == 0)
             cout << "\nbook is not present\n";
@@ -174,6 +176,7 @@ void Library::update_book()
                 cout << "\n\n\t\t\t=====Library Management System======";
                 cout << "===============================================================\n\n\n";
 
+                cout<<" enter new book id details to update : "<<endl;
                 cout << "enter book new id : ";
                 cin >> ptr->book_id;
                 cout << "enter book price : ";
@@ -186,8 +189,8 @@ void Library::update_book()
                 cin >> ptr->book_publisher;
 
                 fg++;
-
                 cout << "\nupdate book details is done\n";
+                break;
             }
             ptr = ptr->link;
         }
@@ -259,11 +262,13 @@ void Library::display_book()
         Node *ptr = head;
         while (ptr != NULL)
         {
-            cout << "book id is : " << ptr->book_id << endl;
-            cout << "book price is : " << ptr->book_price << endl;
-            cout << "book name is : " << ptr->book_name << endl;
-            cout << "book author is : " << ptr->book_author << endl;
-            cout << "book publisher is : " << ptr->book_publisher << endl;
+            cout<<"[ ";
+            cout << " [book id is : " << ptr->book_id << "] ";
+            cout << " [book price is : " << ptr->book_price << "] ";
+            cout << " [book name is : " << ptr->book_name << "] ";
+            cout << " [book author is : " << ptr->book_author << "] ";
+            cout << " [book publisher is : " << ptr->book_publisher << "] ";
+            cout<<" ]"<<endl;
             ptr = ptr->link;
         }
     }
