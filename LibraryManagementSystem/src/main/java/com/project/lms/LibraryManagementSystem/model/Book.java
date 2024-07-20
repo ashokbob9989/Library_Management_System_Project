@@ -19,8 +19,14 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
-    private String author;
-    private String publisher;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_name")
+    private Author author;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "publisher_id")
+    @JoinColumn(name = "publisher_name")
+    private Publisher publisher;
     private Long price;
     @CreationTimestamp
     private LocalDateTime createdOn;
