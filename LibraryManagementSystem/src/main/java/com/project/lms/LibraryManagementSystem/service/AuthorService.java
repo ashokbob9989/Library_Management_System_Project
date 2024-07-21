@@ -14,4 +14,8 @@ public class AuthorService {
     public void addAuthor(Author author) {
         authorRepository.save(author);
     }
+
+    public Author findAuthorByIdAndName(Long id, String name) {
+        return authorRepository.findAuthorByIdAndName(id, name);
+    }
 }

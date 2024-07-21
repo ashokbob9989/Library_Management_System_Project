@@ -14,4 +14,8 @@ public class PublisherService {
     public void addPublisher(Publisher publisher) {
         publisherRepository.save(publisher);
     }
+
+    public Publisher findPublisherByIdAndName(Long id, String name) {
+        return publisherRepository.findByIdAndName(id, name);
+    }
 }
