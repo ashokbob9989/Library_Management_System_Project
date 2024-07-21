@@ -1,23 +1,26 @@
 package com.project.lms.LibraryManagementSystem.controller;
 
-import com.project.lms.LibraryManagementSystem.model.Book;
+import com.project.lms.LibraryManagementSystem.model.*;
+import com.project.lms.LibraryManagementSystem.service.AuthorService;
 import com.project.lms.LibraryManagementSystem.service.BookService;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import com.project.lms.LibraryManagementSystem.service.PublisherService;
 
 @RestController
 @RequestMapping("/books")
@@ -26,387 +29,251 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private AuthorService authorService;
+
+    @Autowired
+    private PublisherService publisherService;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     Logger log = LoggerFactory.getLogger(BookController.class);
 
-    @PostMapping(value = "/addBook", produces = "application/json")
-    @Operation(summary = "Add Book", description = "Post request to Add Book")
+    @PostMapping(value = "/addBooks", produces = "application/json")
+    @Operation(summary = "Add book(s) at once", description = "See example request and add object(s) format same as example request.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Book added successfully"),
-        @ApiResponse(responseCode = "400", description = "Bad Request"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "201", description = "Books are created successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Books not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @Parameters({
-        @Parameter(name="name", required = true, description = "Name of the book"),
-        @Parameter(name="author", required = true, description = "Author of the book"),
-        @Parameter(name="publisher", required = true, description = "publisher of the book"),
-        @Parameter(name="price", required = true, description = "price on of the book"),
-    })
-    public ResponseEntity<Book> addBook(@RequestBody Book book) {
-        if(book.getCreatedOn() == null) {
-            book.setCreatedOn(LocalDateTime.now());
-        }
-        if(book.getUpdatedOn() == null) {
+    public ResponseEntity<List<Book>> addBooks(@RequestBody List<Book> books) {
+        List<Book> addedBooks = new ArrayList<>();
+
+        for (Book book : books) {
+            if (book.getCreatedOn() == null) {
+                book.setCreatedOn(LocalDateTime.now());
+            }
             book.setUpdatedOn(LocalDateTime.now());
+
+            if (book.getAuthor() != null) {
+                Author existingAuthor = this.authorService.findAuthorByIdAndName(book.getAuthor().getPersonId().getId(), book.getAuthor().getPersonId().getName());
+                if (existingAuthor == null) {
+                    if (book.getAuthor().getCreatedOn() == null) {
+                        book.getAuthor().setCreatedOn(LocalDateTime.now());
+                    }
+                    book.getAuthor().setUpdatedOn(LocalDateTime.now());
+                    this.authorService.addAuthor(book.getAuthor());
+                }
+                else {
+                    book.setAuthor(existingAuthor);
+                }
+            }
+
+            if (book.getPublisher() != null) {
+                Publisher existingPublisher = this.publisherService.findPublisherByIdAndName(book.getPublisher().getPersonId().getId(), book.getPublisher().getPersonId().getName());
+                if (existingPublisher == null) {
+                    if (book.getPublisher().getCreatedOn() == null) {
+                        book.getPublisher().setCreatedOn(LocalDateTime.now());
+                    }
+                    book.getPublisher().setUpdatedOn(LocalDateTime.now());
+                    this.publisherService.addPublisher(book.getPublisher());
+                }
+                else {
+                    book.setPublisher(existingPublisher);
+                }
+            }
+
+            addedBooks.add(this.bookService.addBook(book));
         }
-        log.info("Book added successfully");
-        return new ResponseEntity<>(this.bookService.addBook(book),HttpStatus.CREATED);
+
+        return new ResponseEntity<>(addedBooks, HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/addAllBooks", produces = "application/json")
-    @Operation(summary = "Add All Books", description = "Post request to Add All Books")
+    @GetMapping(value = "/getBookById/{id}", produces = "application/json")
+    @Operation(summary = "Get book by id", description = "Give book id to get book")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Books added successfully"),
+            @ApiResponse(responseCode = "200", description = "Book found"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    public ResponseEntity<List<Book>> addAllBooks(@RequestBody List<Book> books) {
-        log.info("Books added successfully");
-        return new ResponseEntity<>(this.bookService.addAllBooks(books),HttpStatus.CREATED);
+    public ResponseEntity<Book> getBookById(@PathVariable("id") Long id) {
+        return new ResponseEntity<Book>(this.bookService.getBookById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/allBooks", produces = "application/json")
-    @Operation(summary = "Get All Books", description = "Get request to Get All Books")
+    @GetMapping(value = "/getBookByName/{name}", produces = "application/json")
+    @Operation(summary = "Get book(s) by name", description = "Give book name to get book(s)")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Books fetched successfully"),
+            @ApiResponse(responseCode = "200", description = "Book found"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    public ResponseEntity<List<Book>> getBookByName(@PathVariable("name") String name) {
+        return new ResponseEntity<List<Book>>(this.bookService.getBookByName(name).orElseThrow(() -> new RuntimeException("Book not found")), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getBookByPrice/{price}", produces = "application/json")
+    @Operation(summary = "Get book(s) by price", description = "Give book price to get book(s)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Book found"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    public ResponseEntity<List<Book>> getBookByPrice(@PathVariable("price") Long price) {
+        return new ResponseEntity<List<Book>>(this.bookService.getBookByPrice(price), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getBookByAuthor/{author_id}", produces = "application/json")
+    @Operation(summary = "Get book(s) by author id", description = "Give author id to get book(s)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Book found"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    public ResponseEntity<List<Book>> getBookByAuthorId(@PathVariable("author_id") Long author_id) {
+        List<Book> allBooks = this.bookService.getAllBooks();
+        List<Book> booksByAuthor = allBooks.stream()
+                .filter(book -> book.getAuthor().getPersonId().getId().equals(author_id))
+                .collect(Collectors.toList());
+
+        if(booksByAuthor.isEmpty()) {
+            throw new RuntimeException("No books found for the author with ID: " + author_id);
+        }
+
+        return new ResponseEntity<List<Book>>(booksByAuthor, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getBookByPublisher/{publisher_id}", produces = "application/json")
+    @Operation(summary = "Get book(s) by publisher id", description = "Give publisher id to get book(s)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Book found"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    public ResponseEntity<List<Book>> getBookByPublisherId(@PathVariable("publisher_id") Long publisher_id) {
+        List<Book> allBooks = this.bookService.getAllBooks();
+        List<Book> booksByPublisher = allBooks.stream()
+                .filter(book -> book.getPublisher().getPersonId().getId().equals(publisher_id))
+                .collect(Collectors.toList());
+
+        if(booksByPublisher.isEmpty()) {
+            throw new RuntimeException("No books found for the publisher with ID: " + publisher_id);
+        }
+
+        return new ResponseEntity<List<Book>>(booksByPublisher, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getAllBooks", produces = "application/json")
+    @Operation(summary = "Get all book(s)", description = "Just hit try option to get all book(s)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Books found"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Books not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     public ResponseEntity<List<Book>> getAllBooks() {
-        log.info("All Books fetched successfully");
-        return new ResponseEntity<>(this.bookService.getAllBooks(),HttpStatus.OK);
+        return new ResponseEntity<List<Book>>(this.bookService.getAllBooks(), HttpStatus.OK);
     }
 
-    @GetMapping(produces = "application/json")
-    @Operation(summary = "Get Books", description = "Get request to Get Books by id, name or author")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Books fetched successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-
-    public ResponseEntity<List<Book>> getAllBooks(@RequestParam(required = false) Long id, @RequestParam(required = false) String name, @RequestParam(required = false) String author) {
-        List<Book> books=this.bookService.getAllBooks().stream().filter(book -> (id == null || book.getId().equals(id)) && (name == null || book.getName().equals(name)) && (author == null || book.getAuthor().equals(author))).toList();
-        log.info("Book with id {} or name {} or author {} fetched successfully", id, name, author);
-        return new ResponseEntity<>(books,HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/id/{id}", produces = "application/json")
-    @Operation(summary = "Get Book", description = "Get request to Get Book by id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book fetched successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="id", required = true, description = "Id of the book")
-    })
-    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
-        log.info("Book with id {} fetched successfully", id);
-        return new ResponseEntity<>(this.bookService.getBookById(id),HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/name/{name}", produces = "application/json")
-    @Operation(summary = "Get Book", description = "Get request to Get Book by name")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book fetched successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="name", required = true, description = "Name of the book")
-    })
-    public ResponseEntity<List<Book>> getBookByName(@PathVariable String name) {
-        log.info("Book with name {} fetched successfully", name);
-        return new ResponseEntity<>(this.bookService.getBookByName(name),HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/author/{author}", produces = "application/json")
-    @Operation(summary = "Get Book", description = "Get request to Get Book by author")
-    @Parameters({
-            @Parameter(name="author", required = true, description = "Author of the book")
-    })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book fetched successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    public ResponseEntity<List<Book>> getBookByAuthor(@PathVariable String author) {
-        log.info("Book with author {} fetched successfully", author);
-        return new ResponseEntity<>(this.bookService.getBookByAuthor(author),HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/publisher/{publisher}", produces = "application/json")
-    @Operation(summary = "Get Book", description = "Get request to Get Book by publisher")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book fetched successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="publisher", required = true, description = "Publisher of the book")
-    })
-    public ResponseEntity<List<Book>> getBookByPublisher(@PathVariable String publisher) {
-        log.info("Book with publisher {} fetched successfully", publisher);
-        return new ResponseEntity<>(this.bookService.getBookByPublisher(publisher),HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/price/{price}", produces = "application/json")
-    @Operation(summary = "Get Book", description = "Get request to Get Book by price")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book fetched successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="price", required = true, description = "Price of the book")
-    })
-    public ResponseEntity<List<Book>> getBookByPrice(@PathVariable Long price) {
-        log.info("Book with price {} fetched successfully", price);
-        return new ResponseEntity<>(this.bookService.getBookByPrice(price),HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/createdOn/{createdOn}", produces = "application/json")
-    @Operation(summary = "Get Book", description = "Get request to Get Book by created on")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book fetched successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="createdOn", required = true, description = "Created on of the book")
-    })
-    public ResponseEntity<List<Book>> getBookByCreatedOn(@PathVariable LocalDateTime createdOn) {
-        log.info("Book with created on {} fetched successfully", createdOn);
-        return new ResponseEntity<>(this.bookService.getBookByCreatedOn(createdOn),HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/updatedOn/{updatedOn}", produces = "application/json")
-    @Operation(summary = "Get Book", description = "Get request to Get Book by updated on")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book fetched successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="updatedOn", required = true, description = "Updated on of the book")
-    })
-    public ResponseEntity<List<Book>> getBookByUpdatedOn(@PathVariable LocalDateTime updatedOn) {
-        log.info("Book with updated on {} fetched successfully", updatedOn);
-        return new ResponseEntity<>(this.bookService.getBookByUpdatedOn(updatedOn),HttpStatus.OK);
-    }
-
-    @PutMapping(value = "/updateBookById/{id}", produces = "application/json")
-    @Operation(summary = "Update Book", description = "Put request to Update Book by id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="id", required = true, description = "Id of the book")
-    })
-    public ResponseEntity<Book> updateBookById(@PathVariable Long id, @RequestBody Book book) {
-        log.info("Book with id {} updated successfully", id);
-        return new ResponseEntity<>(this.bookService.updateBookById(id,book),HttpStatus.OK);
-    }
-
-    @PatchMapping(value = "/minorUpdateBookById/{id}", produces = "application/json")
-    @Operation(summary = "Update Book", description = "Patch request to Update Book by id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="id", required = true, description = "Id of the book")
-    })
-    public ResponseEntity<Book> minorUpdateBookById(@PathVariable Long id, @RequestBody Book book) {
-        log.info("Updated Book with minor changes in id {} successfully", id);
-        return new ResponseEntity<>(this.bookService.minorUpdateBookById(id,book),HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = "/deleteBookById/{id}", produces = "application/json")
-    @Operation(summary = "Delete Book", description = "Delete request to Delete Book by id")
+    @DeleteMapping(value = "/deleteBook/{id}", produces = "application/json")
+    @Operation(summary = "Delete book by id", description = "Give book id to delete book")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @Parameters({
-            @Parameter(name="id", required = true, description = "Id of the book")
-    })
-    public ResponseEntity<String> deleteBookById(@PathVariable Long id) {
-        log.info("Book with id {} deleted successfully", id);
-        return new ResponseEntity<>(this.bookService.deleteBookById(id),HttpStatus.OK);
-    }
-
-    //to hide this api call from user
-    @Hidden
-    @DeleteMapping(value = "/deleteAllBooks", produces = "application/json")
-    @Operation(summary = "Delete All Books", description = "Delete request to Delete All Books")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "All Books deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="id", required = true, description = "Id of the book")
-    })
-    public ResponseEntity<String> deleteAllBooks() {
-        log.info("All Books deleted successfully");
-        return new ResponseEntity<>(this.bookService.deleteAllBooks(),HttpStatus.OK);
+    public ResponseEntity<Book> deleteBook(@PathVariable("id") Long id) {
+        return new ResponseEntity<Book>(this.bookService.deleteBook(id), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/deleteBookByName/{name}", produces = "application/json")
-    @Operation(summary = "Delete Book", description = "Delete request to Delete Book by name")
+    @Operation(summary = "Delete book(s) by name", description = "Give book name to delete book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @Parameters({
-            @Parameter(name="name", required = true, description = "Name of the book")
-    })
-    public ResponseEntity<String> deleteBookByName(@PathVariable String name) {
-        log.info("Book with name {} deleted successfully", name);
-        return new ResponseEntity<>(this.bookService.deleteBookByName(name),HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = "/deleteBookByAuthor/{author}", produces = "application/json")
-    @Operation(summary = "Delete Book", description = "Delete request to Delete Book by author")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="author", required = true, description = "Author of the book")
-    })
-    public ResponseEntity<String> deleteBookByAuthor(@PathVariable String author) {
-        log.info("Book with author {} deleted successfully", author);
-        return new ResponseEntity<>(this.bookService.deleteBookByAuthor(author),HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = "/deleteBookByPublisher/{publisher}", produces = "application/json")
-    @Operation(summary = "Delete Book", description = "Delete request to Delete Book by publisher")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
-    })
-    @Parameters({
-            @Parameter(name="publisher", required = true, description = "Publisher of the book")
-    })
-    public ResponseEntity<String> deleteBookByPublisher(@PathVariable String publisher) {
-        log.info("Book with publisher {} deleted successfully", publisher);
-        return new ResponseEntity<>(this.bookService.deleteBookByPublisher(publisher),HttpStatus.OK);
+    public ResponseEntity<List<Book>> deleteBookByName(@PathVariable("name") String name) {
+        return new ResponseEntity<List<Book>>(this.bookService.deleteBookByName(name), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/deleteBookByPrice/{price}", produces = "application/json")
-    @Operation(summary = "Delete Book", description = "Delete request to Delete Book by price")
+    @Operation(summary = "Delete book(s) by price", description = "Give book price to delete book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @Parameters({
-            @Parameter(name="price", required = true, description = "Price of the book")
-    })
-    public ResponseEntity<String> deleteBookByPrice(@PathVariable Long price) {
-        log.info("Book with price {} deleted successfully", price);
-        return new ResponseEntity<>(this.bookService.deleteBookByPrice(price),HttpStatus.OK);
+    public ResponseEntity<List<Book>> deleteBookByPrice(@PathVariable("price") Long price) {
+        return new ResponseEntity<List<Book>>(this.bookService.deleteBookByPrice(price), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/deleteBookByCreatedOn/{createdOn}", produces = "application/json")
-    @Operation(summary = "Delete Book", description = "Delete request to Delete Book by created on")
+    @DeleteMapping(value = "/deleteBookByAuthor/{author_id}", produces = "application/json")
+    @Operation(summary = "Delete book(s) by author id", description = "Give author id to delete book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @Parameters({
-            @Parameter(name="createdOn", required = true, description = "Created on of the book")
-    })
-    public ResponseEntity<String> deleteBookByCreatedOn(@PathVariable LocalDateTime createdOn) {
-        log.info("Book with created on {} deleted successfully", createdOn);
-        return new ResponseEntity<>(this.bookService.deleteBookByCreatedOn(createdOn),HttpStatus.OK);
+    public ResponseEntity<List<Book>> deleteBookByAuthor(@PathVariable("author_id") Long author_id) {
+        return new ResponseEntity<List<Book>>(this.bookService.deleteBookByAuthor(author_id), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/deleteBookByUpdatedOn/{updatedOn}", produces =  "application/json")
-    @Operation(summary = "Delete Book", description = "Delete request to Delete Book by updated on")
+    @DeleteMapping(value = "/deleteBookByPublisher/{publisher_id}", produces = "application/json")
+    @Operation(summary = "Delete book(s) by publisher id", description = "Give publisher id to delete book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden")
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @Parameters({
-            @Parameter(name="updatedOn", required = true, description = "Updated on of the book")
+    public ResponseEntity<List<Book>> deleteBookByPublisher(@PathVariable("publisher_id") Long publisher_id) {
+        return new ResponseEntity<List<Book>>(this.bookService.deleteBookByPublisher(publisher_id), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/deleteAllBooks", produces = "application/json")
+    @Operation(summary = "Delete all book(s)", description = "Just hit try option to delete all book(s)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Books deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Books not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    public ResponseEntity<String> deleteBookByUpdatedOn(@PathVariable LocalDateTime updatedOn) {
-        log.info("Book with updated on {} deleted successfully", updatedOn);
-        return new ResponseEntity<>(this.bookService.deleteBookByUpdatedOn(updatedOn),HttpStatus.OK);
+    public ResponseEntity<List<Book>> deleteAllBooks() {
+        return new ResponseEntity<List<Book>>(this.bookService.deleteAllBooks(), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/updateBook/{id}", produces = "application/json")
+    @Operation(summary = "Update book by id", description = "Give book id to update book")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Book updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    public ResponseEntity<Book> updateBook(@PathVariable("id") Long id, @RequestBody Book book) {
+        return new ResponseEntity<Book>(this.bookService.updateBook(id, book), HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/minorUpdateBook/{id}", produces = "application/json")
+    @Operation(summary = "Minor update book by id", description = "Give book id to do minor updates on book")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Book updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    public ResponseEntity<Book> minorUpdateBook(@PathVariable("id") Long id, @RequestBody Book book) {
+        return new ResponseEntity<Book>(this.bookService.minorUpdateBook(id, book), HttpStatus.OK);
     }
 }

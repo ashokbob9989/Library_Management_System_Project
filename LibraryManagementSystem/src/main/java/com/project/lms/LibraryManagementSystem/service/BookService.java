@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -18,123 +19,82 @@ public class BookService {
         return this.bookRepository.save(book);
     }
 
-    public List<Book> addAllBooks(List<Book> books) {
-        return this.bookRepository.saveAll(books);
-    }
-
     public List<Book> getAllBooks() {
         return this.bookRepository.findAll();
     }
 
     public Book getBookById(Long id) {
-        return this.bookRepository.findById(id).orElse(null);
+        return this.bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
-    public List<Book> getBookByName(String name) {
-        return this.bookRepository.findByNameContainingIgnoreCase(name);
-    }
-
-    public List<Book> getBookByAuthor(String author) {
-        return this.bookRepository.findByAuthorContainingIgnoreCase(author);
-    }
-
-    public List<Book> getBookByPublisher(String publisher) {
-        return this.bookRepository.findByPublisherContainingIgnoreCase(publisher);
+    public Optional<List<Book>> getBookByName(String name) {
+        return Optional.ofNullable(this.bookRepository.findByName(name));
     }
 
     public List<Book> getBookByPrice(Long price) {
         return this.bookRepository.findByPrice(price);
     }
 
-    public List<Book> getBookByCreatedOn(LocalDateTime createdOn) {
-        return this.bookRepository.findByCreatedOn(createdOn);
+    public Book deleteBook(Long id) {
+        Book book = this.getBookById(id);
+        this.bookRepository.delete(book);
+        return book;
     }
 
-    public List<Book> getBookByUpdatedOn(LocalDateTime updatedOn) {
-        return this.bookRepository.findByUpdatedOn(updatedOn);
+    public List<Book> deleteBookByName(String name) {
+        List<Book> books = this.bookRepository.findAllByName(name);
+        this.bookRepository.deleteAll(books);
+        return books;
     }
 
-    //major update happened so we use PUT method
-    public Book updateBookById(Long id, Book book) {
-        Book existingBook = this.bookRepository.findById(id).orElse(null);
-        assert existingBook != null;
+    public List<Book> deleteBookByPrice(Long price) {
+        List<Book> books = this.bookRepository.findByPrice(price);
+        this.bookRepository.deleteAll(books);
+        return books;
+    }
+
+    public List<Book> deleteBookByAuthor(Long authorId) {
+        List<Book> books = this.bookRepository.findAll().stream().filter(book -> book.getAuthor().getPersonId().getId().equals(authorId)).toList();
+        this.bookRepository.deleteAll(books);
+        return books;
+    }
+
+    public List<Book> deleteBookByPublisher(Long publisherId) {
+        List<Book> books = this.bookRepository.findAll().stream().filter(book -> book.getPublisher().getPersonId().getId().equals(publisherId)).toList();
+        this.bookRepository.deleteAll(books);
+        return books;
+    }
+
+    public List<Book> deleteAllBooks() {
+        List<Book> books = this.bookRepository.findAll();
+        this.bookRepository.deleteAll(books);
+        return books;
+    }
+
+    public Book updateBook(Long id, Book book) {
+        Book existingBook = this.bookRepository.getBookById(id);
         existingBook.setName(book.getName());
-        existingBook.setAuthor(book.getAuthor());
-        existingBook.setPublisher(book.getPublisher());
         existingBook.setPrice(book.getPrice());
+        if (book.getAuthor() != null) {
+            existingBook.setAuthor(book.getAuthor());
+        }
+        if (book.getPublisher() != null) {
+            existingBook.setPublisher(book.getPublisher());
+        }
+        if (book.getCreatedOn() != null) {
+            existingBook.setCreatedOn(book.getCreatedOn());
+        }
         existingBook.setUpdatedOn(LocalDateTime.now());
         return this.bookRepository.save(existingBook);
     }
 
-    //minor update happened rest all remains same, so we use PATCH method
-    public Book minorUpdateBookById(Long id, Book book) {
-        Book existingBook = this.bookRepository.findById(id).orElse(null);
-        assert existingBook != null;
+    public Book minorUpdateBook(Long id, Book book) {
+        Book existingBook = this.bookRepository.getBookById(id);
         existingBook.setPrice(book.getPrice());
+        if (book.getCreatedOn() != null) {
+            existingBook.setCreatedOn(book.getCreatedOn());
+        }
         existingBook.setUpdatedOn(LocalDateTime.now());
         return this.bookRepository.save(existingBook);
-    }
-
-    public String deleteBookById(Long id) {
-        this.bookRepository.deleteById(id);
-        return "Book deleted successfully";
-    }
-    public String deleteAllBooks() {
-        this.bookRepository.deleteAll();
-        return "All books deleted successfully";
-    }
-
-    public String deleteBookByName(String name) {
-        List<Book> booksToDelete = this.bookRepository.findByNameContainingIgnoreCase(name);
-        if (booksToDelete.isEmpty()) {
-            return "No book found with name " + name;
-        }
-        this.bookRepository.deleteAll(booksToDelete);
-        return "Book(s) deleted successfully";
-    }
-
-    public String deleteBookByAuthor(String author) {
-        List<Book> booksToDelete = this.bookRepository.findByAuthorContainingIgnoreCase(author);
-        if (booksToDelete.isEmpty()) {
-            return "No book found with author " + author;
-        }
-        this.bookRepository.deleteAll(booksToDelete);
-        return "Book(s) deleted successfully";
-    }
-
-    public String deleteBookByPublisher(String publisher) {
-        List<Book> booksToDelete = this.bookRepository.findByPublisherContainingIgnoreCase(publisher);
-        if (booksToDelete.isEmpty()) {
-            return "No book found with publisher " + publisher;
-        }
-        this.bookRepository.deleteAll(booksToDelete);
-        return "Book(s) deleted successfully";
-    }
-
-    public String deleteBookByPrice(Long price) {
-        List<Book> booksToDelete = this.bookRepository.findByPrice(price);
-        if (booksToDelete.isEmpty()) {
-            return "No book found with price " + price;
-        }
-        this.bookRepository.deleteAll(booksToDelete);
-        return "Book(s) deleted successfully";
-    }
-
-    public String deleteBookByCreatedOn(LocalDateTime createdOn) {
-        List<Book> booksToDelete = this.bookRepository.findByCreatedOn(createdOn);
-        if (booksToDelete.isEmpty()) {
-            return "No book found with createdOn " + createdOn;
-        }
-        this.bookRepository.deleteAll(booksToDelete);
-        return "Book(s) deleted successfully";
-    }
-
-    public String deleteBookByUpdatedOn(LocalDateTime updatedOn) {
-        List<Book> booksToDelete = this.bookRepository.findByUpdatedOn(updatedOn);
-        if (booksToDelete.isEmpty()) {
-            return "No book found with updatedOn " + updatedOn;
-        }
-        this.bookRepository.deleteAll(booksToDelete);
-        return "Book(s) deleted successfully";
     }
 }
