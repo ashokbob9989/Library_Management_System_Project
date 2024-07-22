@@ -136,6 +136,11 @@ public class AuthorService {
 
     public Author minorUpdateAuthor(Author author) {
         Author oldAuthor = this.getAuthorById(author.getPersonId().getId());
+        oldAuthor.setPersonId(author.getPersonId());
+        oldAuthor.getPersonId().setId(author.getPersonId().getId());
+        oldAuthor.getPersonId().setName(author.getPersonId().getName());
+        oldAuthor.setPhone(author.getPhone());
+        oldAuthor.setEmail(author.getEmail());
         oldAuthor.setCity(author.getCity());
         oldAuthor.setState(author.getState());
         oldAuthor.setCountry(author.getCountry());
