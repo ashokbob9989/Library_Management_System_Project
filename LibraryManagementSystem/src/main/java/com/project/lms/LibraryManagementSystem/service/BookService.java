@@ -90,7 +90,14 @@ public class BookService {
 
     public Book minorUpdateBook(Long id, Book book) {
         Book existingBook = this.bookRepository.getBookById(id);
+        existingBook.setName(book.getName());
         existingBook.setPrice(book.getPrice());
+        if (book.getAuthor() != null) {
+            existingBook.setAuthor(book.getAuthor());
+        }
+        if (book.getPublisher() != null) {
+            existingBook.setPublisher(book.getPublisher());
+        }
         if (book.getCreatedOn() != null) {
             existingBook.setCreatedOn(book.getCreatedOn());
         }

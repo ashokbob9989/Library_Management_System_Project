@@ -265,7 +265,7 @@ public class AuthorController {
     }
 
     @DeleteMapping(value = "/deleteAllAuthors", produces = "application/json")
-    @Operation(summary = "Delete all authors", description = "Just hit try option to Delete all authors")
+    @Operation(summary = "Delete all authors", description = "Just hit try option to     Delete all authors")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All authors deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
