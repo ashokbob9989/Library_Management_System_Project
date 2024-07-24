@@ -3,6 +3,7 @@ package com.project.lms.LibraryManagementSystem.controller;
 import com.project.lms.LibraryManagementSystem.model.Author;
 import com.project.lms.LibraryManagementSystem.service.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
@@ -28,9 +29,9 @@ public class AuthorController {
     @Operation(summary = "Add author(s)", description = "See example and add object(s) in body")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Author(s) created successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> addAuthors(@RequestBody List<Author> authors) {
         for(Author author : authors) {
@@ -47,9 +48,9 @@ public class AuthorController {
     @Operation(summary = "Get author by id", description = "Give author id to get author")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Author> getAuthorById(@PathVariable Long id) {
         Author author = this.authorService.getAuthorById(id);
@@ -60,9 +61,9 @@ public class AuthorController {
     @Operation(summary = "Get author(s) by name", description = "Give author name to get author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> getAuthorByName(@PathVariable String name) {
         List<Author> authors = this.authorService.getAuthorByName(name);
@@ -73,9 +74,9 @@ public class AuthorController {
     @Operation(summary = "Get author(s) by email", description = "Give author email to get author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> getAuthorByEmail(@PathVariable String email) {
         List<Author> authors = this.authorService.getAuthorByEmail(email);
@@ -86,9 +87,9 @@ public class AuthorController {
     @Operation(summary = "Get author(s) by city", description = "Give author city to get author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> getAuthorByCity(@PathVariable String city) {
         List<Author> authors = this.authorService.getAuthorByCity(city);
@@ -99,9 +100,9 @@ public class AuthorController {
     @Operation(summary = "Get author(s) by state", description = "Give author state to get author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> getAuthorByState(@PathVariable String state) {
         List<Author> authors = this.authorService.getAuthorByState(state);
@@ -112,9 +113,9 @@ public class AuthorController {
     @Operation(summary = "Get author(s) by country", description = "Give author country to get author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> getAuthorByCountry(@PathVariable String country) {
         List<Author> authors = this.authorService.getAuthorByCountry(country);
@@ -125,9 +126,9 @@ public class AuthorController {
     @Operation(summary = "Get author(s) by Zip", description = "Give author Zip to get author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> getAuthorByZip(@PathVariable String Zip) {
         List<Author> authors = this.authorService.getAuthorByZip(Zip);
@@ -138,9 +139,9 @@ public class AuthorController {
     @Operation(summary = "Get author(s) by phone", description = "Give author phone to get author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Author> getAuthorByPhone(@PathVariable String phone) {
         Author author = this.authorService.getAuthorByPhone(phone);
@@ -151,9 +152,9 @@ public class AuthorController {
     @Operation(summary = "Get all authors", description = "Just hit try option to get all authors")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Authors found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> getAllAuthors() {
         List<Author> authors = this.authorService.getAllAuthors();
@@ -164,9 +165,9 @@ public class AuthorController {
     @Operation(summary = "Delete author by id", description = "Give author id to delete author")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Author> deleteAuthorById(@PathVariable Long id) {
         Author Author = this.authorService.deleteAuthorById(id);
@@ -177,9 +178,9 @@ public class AuthorController {
     @Operation(summary = "Delete author(s) by name", description = "Give author name to delete author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author(s) deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> deleteAuthorByName(@PathVariable String name) {
         List<Author> authors = this.authorService.deleteAuthorByName(name);
@@ -190,9 +191,9 @@ public class AuthorController {
     @Operation(summary = "Delete author(s) by state", description = "Give author state to delete author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author(s) deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> deleteAuthorByState(@PathVariable String state) {
         List<Author> authors = this.authorService.deleteAuthorByState(state);
@@ -203,9 +204,9 @@ public class AuthorController {
     @Operation(summary = "Delete author(s) by country", description = "Give author country to delete author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author(s) deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> deleteAuthorByCountry(@PathVariable String country) {
         List<Author> authors = this.authorService.deleteAuthorByCountry(country);
@@ -216,9 +217,9 @@ public class AuthorController {
     @Operation(summary = "Delete author(s) by city", description = "Give author city to delete author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author(s) deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> deleteAuthorByCity(@PathVariable String city) {
         List<Author> authors = this.authorService.deleteAuthorByCity(city);
@@ -229,9 +230,9 @@ public class AuthorController {
     @Operation(summary = "Delete author(s) by email", description = "Give author email to delete author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author(s) deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> deleteAuthorByEmail(@PathVariable String email) {
         List<Author> authors = this.authorService.deleteAuthorByEmail(email);
@@ -242,9 +243,9 @@ public class AuthorController {
     @Operation(summary = "Delete author(s) by zip", description = "Give author zip to delete author(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author(s) deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Author>> deleteAuthorByZip(@PathVariable String zip) {
         List<Author> authors = this.authorService.deleteAuthorByZip(zip);
@@ -255,9 +256,9 @@ public class AuthorController {
     @Operation(summary = "Delete author by phone", description = "Give author phone to delete author")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author(s) deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Author> deleteAuthorByPhone(@PathVariable String phone) {
         Author author = this.authorService.deleteAuthorByPhone(phone);
@@ -268,9 +269,9 @@ public class AuthorController {
     @Operation(summary = "Delete all authors", description = "Just hit try option to     Delete all authors")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All authors deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<String> deleteAllAuthors() {
         this.authorService.deleteAllAuthors();
@@ -281,9 +282,9 @@ public class AuthorController {
     @Operation(summary = "Update author", description = "Update major details of author")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Author> updateAuthor(@PathVariable Long id, @RequestBody Author author) {
         Author updatedAuthor = this.authorService.updateAuthor(author);
@@ -294,9 +295,9 @@ public class AuthorController {
     @Operation(summary = "Minor update author", description = "Minor update details of author")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Author updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Author> minorUpdateAuthor(@PathVariable Long id, @RequestBody Author author) {
         Author updatedAuthor = this.authorService.minorUpdateAuthor(author);

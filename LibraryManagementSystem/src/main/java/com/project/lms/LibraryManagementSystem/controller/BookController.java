@@ -4,6 +4,7 @@ import com.project.lms.LibraryManagementSystem.model.*;
 import com.project.lms.LibraryManagementSystem.service.AuthorService;
 import com.project.lms.LibraryManagementSystem.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,9 @@ public class BookController {
     @Operation(summary = "Add book(s) at once", description = "See example request and add object(s) format same as example request.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Books are created successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Books not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> addBooks(@RequestBody List<Book> books) {
         List<Book> addedBooks = new ArrayList<>();
@@ -86,6 +87,7 @@ public class BookController {
             }
 
             addedBooks.add(this.bookService.addBook(book));
+
         }
 
         return new ResponseEntity<>(addedBooks, HttpStatus.CREATED);
@@ -95,9 +97,9 @@ public class BookController {
     @Operation(summary = "Get book by id", description = "Give book id to get book")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<Book> getBookById(@PathVariable("id") Long id) {
         return new ResponseEntity<Book>(this.bookService.getBookById(id), HttpStatus.OK);
@@ -107,21 +109,21 @@ public class BookController {
     @Operation(summary = "Get book(s) by name", description = "Give book name to get book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> getBookByName(@PathVariable("name") String name) {
-        return new ResponseEntity<List<Book>>(this.bookService.getBookByName(name).orElseThrow(() -> new RuntimeException("Book not found")), HttpStatus.OK);
+        return new ResponseEntity<List<Book>>(this.bookService.getBookByName(name).orElseThrow(() -> new RuntimeException("Not Found")), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getBookByPrice/{price}", produces = "application/json")
     @Operation(summary = "Get book(s) by price", description = "Give book price to get book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> getBookByPrice(@PathVariable("price") Long price) {
         return new ResponseEntity<List<Book>>(this.bookService.getBookByPrice(price), HttpStatus.OK);
@@ -131,9 +133,9 @@ public class BookController {
     @Operation(summary = "Get book(s) by author id", description = "Give author id to get book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> getBookByAuthorId(@PathVariable("author_id") Long author_id) {
         List<Book> allBooks = this.bookService.getAllBooks();
@@ -152,9 +154,9 @@ public class BookController {
     @Operation(summary = "Get book(s) by publisher id", description = "Give publisher id to get book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> getBookByPublisherId(@PathVariable("publisher_id") Long publisher_id) {
         List<Book> allBooks = this.bookService.getAllBooks();
@@ -173,9 +175,9 @@ public class BookController {
     @Operation(summary = "Get all book(s)", description = "Just hit try option to get all book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Books found"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Books not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> getAllBooks() {
         return new ResponseEntity<List<Book>>(this.bookService.getAllBooks(), HttpStatus.OK);
@@ -185,9 +187,9 @@ public class BookController {
     @Operation(summary = "Delete book by id", description = "Give book id to delete book")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<Book> deleteBook(@PathVariable("id") Long id) {
         return new ResponseEntity<Book>(this.bookService.deleteBook(id), HttpStatus.OK);
@@ -197,9 +199,9 @@ public class BookController {
     @Operation(summary = "Delete book(s) by name", description = "Give book name to delete book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> deleteBookByName(@PathVariable("name") String name) {
         return new ResponseEntity<List<Book>>(this.bookService.deleteBookByName(name), HttpStatus.OK);
@@ -209,9 +211,9 @@ public class BookController {
     @Operation(summary = "Delete book(s) by price", description = "Give book price to delete book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> deleteBookByPrice(@PathVariable("price") Long price) {
         return new ResponseEntity<List<Book>>(this.bookService.deleteBookByPrice(price), HttpStatus.OK);
@@ -221,9 +223,9 @@ public class BookController {
     @Operation(summary = "Delete book(s) by author id", description = "Give author id to delete book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> deleteBookByAuthor(@PathVariable("author_id") Long author_id) {
         return new ResponseEntity<List<Book>>(this.bookService.deleteBookByAuthor(author_id), HttpStatus.OK);
@@ -233,9 +235,9 @@ public class BookController {
     @Operation(summary = "Delete book(s) by publisher id", description = "Give publisher id to delete book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> deleteBookByPublisher(@PathVariable("publisher_id") Long publisher_id) {
         return new ResponseEntity<List<Book>>(this.bookService.deleteBookByPublisher(publisher_id), HttpStatus.OK);
@@ -245,9 +247,9 @@ public class BookController {
     @Operation(summary = "Delete all book(s)", description = "Just hit try option to delete all book(s)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Books deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Books not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<List<Book>> deleteAllBooks() {
         return new ResponseEntity<List<Book>>(this.bookService.deleteAllBooks(), HttpStatus.OK);
@@ -257,9 +259,9 @@ public class BookController {
     @Operation(summary = "Update book by id", description = "Give book id to update book")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<Book> updateBook(@PathVariable("id") Long id, @RequestBody Book book) {
         return new ResponseEntity<Book>(this.bookService.updateBook(id, book), HttpStatus.OK);
@@ -269,9 +271,9 @@ public class BookController {
     @Operation(summary = "Minor update book by id", description = "Give book id to do minor updates on book")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)
     })
     public ResponseEntity<Book> minorUpdateBook(@PathVariable("id") Long id, @RequestBody Book book) {
         return new ResponseEntity<Book>(this.bookService.minorUpdateBook(id, book), HttpStatus.OK);
