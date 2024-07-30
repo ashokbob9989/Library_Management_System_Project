@@ -3,8 +3,10 @@ package com.project.lms.LibraryManagementSystem.controller;
 import com.project.lms.LibraryManagementSystem.model.Publisher;
 import com.project.lms.LibraryManagementSystem.service.PublisherService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/publisher")
+//@Tag(name = "Publisher Details")
 public class PublisherController {
 
     @Autowired
@@ -25,12 +28,12 @@ public class PublisherController {
     Logger log = LoggerFactory.getLogger(PublisherController.class);
 
     @PostMapping(value = "/addPublishers", produces = "application/json")
-    @Operation(summary = "Add publisher(s)", description = "See example and add object(s) in body")
+    @Operation(summary = "Add publisher(s)", description = "See example and add object(s) in body", tags = {"Add Publishers"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Publisher(s) created successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> addPublisher(@RequestBody List<Publisher> publishers) {
         for(Publisher publisher : publishers) {
@@ -44,12 +47,12 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getAllPublisherById/{id}", produces = "application/json")
-    @Operation(summary = "Get Publisher by id", description = "Give publisher id to get publisher")
+    @Operation(summary = "Get Publisher by id", description = "Give publisher id to get publisher", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Publisher> getPublisherById(@PathVariable Long id) {
         Publisher publisher = this.publisherService.getPublisherById(id);
@@ -57,12 +60,12 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByName/{name}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by name", description = "Give publisher name to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by name", description = "Give publisher name to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> getPublisherByName(@PathVariable String name) {
         List<Publisher> publisher = this.publisherService.getPublisherByName(name);
@@ -70,12 +73,12 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByEmail/{email}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by email", description = "Give publisher email to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by email", description = "Give publisher email to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> getPublisherByEmail(@PathVariable String email) {
         List<Publisher> publisher = this.publisherService.getPublisherByEmail(email);
@@ -83,12 +86,12 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByCity/{city}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by city", description = "Give publisher city to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by city", description = "Give publisher city to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> getPublisherByCity(@PathVariable String city) {
         List<Publisher> publisher = this.publisherService.getPublisherByCity(city);
@@ -96,12 +99,12 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByState/{state}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by state", description = "Give publisher state to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by state", description = "Give publisher state to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> getPublisherByState(@PathVariable String state) {
         List<Publisher> publisher = this.publisherService.getPublisherByState(state);
@@ -109,12 +112,12 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByCountry/{country}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by country", description = "Give publisher country to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by country", description = "Give publisher country to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> getPublisherByCountry(@PathVariable String country) {
         List<Publisher> publisher = this.publisherService.getPublisherByCountry(country);
@@ -122,12 +125,12 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByZip/{zip}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by zip", description = "Give publisher zip to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by zip", description = "Give publisher zip to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> getPublisherByZip(@PathVariable String zip) {
         List<Publisher> publisher = this.publisherService.getPublisherByZip(zip);
@@ -135,12 +138,12 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByPhone/{phone}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by phone", description = "Give publisher phone to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by phone", description = "Give publisher phone to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Publisher> getPublisherByPhone(@PathVariable String phone) {
         Publisher publisher = this.publisherService.getPublisherByPhone(phone);
@@ -148,12 +151,12 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getAllPublishers", produces = "application/json")
-    @Operation(summary = "Get all publishers", description = "Just hit try option to get all publishers")
+    @Operation(summary = "Get all publishers", description = "Just hit try option to get all publishers", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> getAllPublishers() {
         List<Publisher> publisher = this.publisherService.getAllPublishers();
@@ -161,12 +164,12 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherById/{id}", produces = "application/json")
-    @Operation(summary = "Delete publisher by id", description = "Give publisher id to delete publisher")
+    @Operation(summary = "Delete publisher by id", description = "Give publisher id to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Publisher> deletePublisherById(@PathVariable Long id) {
         Publisher Publisher = this.publisherService.deletePublisherById(id);
@@ -174,12 +177,12 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByName/{name}", produces = "application/json")
-    @Operation(summary = "Delete publisher by name", description = "Give publisher name to delete publisher")
+    @Operation(summary = "Delete publisher by name", description = "Give publisher name to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> deletePublisherByName(@PathVariable String name) {
         List<Publisher> Publishers = this.publisherService.deletePublisherByName(name);
@@ -187,12 +190,12 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByState/{state}", produces = "application/json")
-    @Operation(summary = "Delete publisher by state", description = "Give publisher state to delete publisher")
+    @Operation(summary = "Delete publisher by state", description = "Give publisher state to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> deletePublisherByState(@PathVariable String state) {
         List<Publisher> Publishers = this.publisherService.deletePublisherByState(state);
@@ -200,12 +203,12 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByCountry/{country}", produces = "application/json")
-    @Operation(summary = "Delete publisher by country", description = "Give publisher country to delete publisher")
+    @Operation(summary = "Delete publisher by country", description = "Give publisher country to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> deletePublisherByCountry(@PathVariable String country) {
         List<Publisher> Publishers = this.publisherService.deletePublisherByCountry(country);
@@ -213,12 +216,12 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByCity/{city}", produces = "application/json")
-    @Operation(summary = "Delete publisher by city", description = "Give publisher city to delete publisher")
+    @Operation(summary = "Delete publisher by city", description = "Give publisher city to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> deletePublisherByCity(@PathVariable String city) {
         List<Publisher> Publishers = this.publisherService.deletePublisherByCity(city);
@@ -226,12 +229,12 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByEmail/{email}", produces = "application/json")
-    @Operation(summary = "Delete publisher by email", description = "Give publisher email to delete publisher")
+    @Operation(summary = "Delete publisher by email", description = "Give publisher email to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> deletePublisherByEmail(@PathVariable String email) {
         List<Publisher> Publishers = this.publisherService.deletePublisherByEmail(email);
@@ -239,12 +242,12 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByZip/{zip}", produces = "application/json")
-    @Operation(summary = "Delete publisher by zip", description = "Give publisher zip to delete publisher")
+    @Operation(summary = "Delete publisher by zip", description = "Give publisher zip to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<List<Publisher>> deletePublisherByZip(@PathVariable String zip) {
         List<Publisher> Publishers = this.publisherService.deletePublisherByZip(zip);
@@ -252,12 +255,12 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByPhone/{phone}", produces = "application/json")
-    @Operation(summary = "Delete publisher by phone", description = "Give publisher phone to delete publisher")
+    @Operation(summary = "Delete publisher by phone", description = "Give publisher phone to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Publisher> deletePublisherByPhone(@PathVariable String phone) {
         Publisher publisher = this.publisherService.deletePublisherByPhone(phone);
@@ -265,12 +268,12 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deleteAllPublishers", produces = "application/json")
-    @Operation(summary = "Delete all publishers", description = "Just hit try option to delete all publishers")
+    @Operation(summary = "Delete all publishers", description = "Just hit try option to delete all publishers", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All Publishers deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<String> deleteAllPublishers() {
         this.publisherService.deleteAllPublishers();
@@ -278,12 +281,12 @@ public class PublisherController {
     }
 
     @PutMapping(value = "/updatePublisher/{id}", produces = "application/json")
-    @Operation(summary = "Update publisher", description = "Update major details of publisher")
+    @Operation(summary = "Update publisher", description = "Update major details of publisher", tags = {"Update Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Publisher> updatePublisher(@PathVariable Long id, @RequestBody Publisher publisher) {
         Publisher updatedPublisher = this.publisherService.updatePublisher(publisher);
@@ -291,12 +294,12 @@ public class PublisherController {
     }
 
     @PatchMapping(value = "/minorUpdatePublisher/{id}", produces = "application/json")
-    @Operation(summary = "Minor update publisher", description = "Minor update details of publisher")
+    @Operation(summary = "Minor update publisher", description = "Minor update details of publisher", tags = {"Update Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
     })
     public ResponseEntity<Publisher> minorUpdatePublisher(@PathVariable Long id, @RequestBody Publisher publisher) {
         Publisher updatedPublisher = this.publisherService.minorUpdatePublisher(publisher);
