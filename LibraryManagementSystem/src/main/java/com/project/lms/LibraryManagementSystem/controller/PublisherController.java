@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/publisher")
+//@Tag(name = "Publisher Details")
 public class PublisherController {
 
     @Autowired
@@ -26,7 +28,7 @@ public class PublisherController {
     Logger log = LoggerFactory.getLogger(PublisherController.class);
 
     @PostMapping(value = "/addPublishers", produces = "application/json")
-    @Operation(summary = "Add publisher(s)", description = "See example and add object(s) in body")
+    @Operation(summary = "Add publisher(s)", description = "See example and add object(s) in body", tags = {"Add Publishers"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Publisher(s) created successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -45,7 +47,7 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getAllPublisherById/{id}", produces = "application/json")
-    @Operation(summary = "Get Publisher by id", description = "Give publisher id to get publisher")
+    @Operation(summary = "Get Publisher by id", description = "Give publisher id to get publisher", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -58,7 +60,7 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByName/{name}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by name", description = "Give publisher name to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by name", description = "Give publisher name to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -71,7 +73,7 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByEmail/{email}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by email", description = "Give publisher email to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by email", description = "Give publisher email to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -84,7 +86,7 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByCity/{city}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by city", description = "Give publisher city to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by city", description = "Give publisher city to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -97,7 +99,7 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByState/{state}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by state", description = "Give publisher state to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by state", description = "Give publisher state to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -110,7 +112,7 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByCountry/{country}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by country", description = "Give publisher country to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by country", description = "Give publisher country to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -123,7 +125,7 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByZip/{zip}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by zip", description = "Give publisher zip to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by zip", description = "Give publisher zip to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -136,7 +138,7 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getPublisherByPhone/{phone}", produces = "application/json")
-    @Operation(summary = "Get Publisher(s) by phone", description = "Give publisher phone to get publisher(s)")
+    @Operation(summary = "Get Publisher(s) by phone", description = "Give publisher phone to get publisher(s)", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -149,7 +151,7 @@ public class PublisherController {
     }
 
     @GetMapping(value = "/getAllPublishers", produces = "application/json")
-    @Operation(summary = "Get all publishers", description = "Just hit try option to get all publishers")
+    @Operation(summary = "Get all publishers", description = "Just hit try option to get all publishers", tags = {"Get Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher found successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -162,7 +164,7 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherById/{id}", produces = "application/json")
-    @Operation(summary = "Delete publisher by id", description = "Give publisher id to delete publisher")
+    @Operation(summary = "Delete publisher by id", description = "Give publisher id to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -175,7 +177,7 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByName/{name}", produces = "application/json")
-    @Operation(summary = "Delete publisher by name", description = "Give publisher name to delete publisher")
+    @Operation(summary = "Delete publisher by name", description = "Give publisher name to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -188,7 +190,7 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByState/{state}", produces = "application/json")
-    @Operation(summary = "Delete publisher by state", description = "Give publisher state to delete publisher")
+    @Operation(summary = "Delete publisher by state", description = "Give publisher state to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -201,7 +203,7 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByCountry/{country}", produces = "application/json")
-    @Operation(summary = "Delete publisher by country", description = "Give publisher country to delete publisher")
+    @Operation(summary = "Delete publisher by country", description = "Give publisher country to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -214,7 +216,7 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByCity/{city}", produces = "application/json")
-    @Operation(summary = "Delete publisher by city", description = "Give publisher city to delete publisher")
+    @Operation(summary = "Delete publisher by city", description = "Give publisher city to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -227,7 +229,7 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByEmail/{email}", produces = "application/json")
-    @Operation(summary = "Delete publisher by email", description = "Give publisher email to delete publisher")
+    @Operation(summary = "Delete publisher by email", description = "Give publisher email to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -240,7 +242,7 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByZip/{zip}", produces = "application/json")
-    @Operation(summary = "Delete publisher by zip", description = "Give publisher zip to delete publisher")
+    @Operation(summary = "Delete publisher by zip", description = "Give publisher zip to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -253,7 +255,7 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deletePublisherByPhone/{phone}", produces = "application/json")
-    @Operation(summary = "Delete publisher by phone", description = "Give publisher phone to delete publisher")
+    @Operation(summary = "Delete publisher by phone", description = "Give publisher phone to delete publisher", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -266,7 +268,7 @@ public class PublisherController {
     }
 
     @DeleteMapping(value = "/deleteAllPublishers", produces = "application/json")
-    @Operation(summary = "Delete all publishers", description = "Just hit try option to delete all publishers")
+    @Operation(summary = "Delete all publishers", description = "Just hit try option to delete all publishers", tags = {"Delete Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All Publishers deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -279,7 +281,7 @@ public class PublisherController {
     }
 
     @PutMapping(value = "/updatePublisher/{id}", produces = "application/json")
-    @Operation(summary = "Update publisher", description = "Update major details of publisher")
+    @Operation(summary = "Update publisher", description = "Update major details of publisher", tags = {"Update Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher updated successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -292,7 +294,7 @@ public class PublisherController {
     }
 
     @PatchMapping(value = "/minorUpdatePublisher/{id}", produces = "application/json")
-    @Operation(summary = "Minor update publisher", description = "Minor update details of publisher")
+    @Operation(summary = "Minor update publisher", description = "Minor update details of publisher", tags = {"Update Publisher"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Publisher updated successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),

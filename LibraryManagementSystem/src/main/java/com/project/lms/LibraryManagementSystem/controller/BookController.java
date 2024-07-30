@@ -25,6 +25,7 @@ import com.project.lms.LibraryManagementSystem.service.PublisherService;
 
 @RestController
 @RequestMapping("/books")
+//@Tag(name = "Book Details")
 public class BookController {
 
     @Autowired
@@ -42,7 +43,7 @@ public class BookController {
     Logger log = LoggerFactory.getLogger(BookController.class);
 
     @PostMapping(value = "/addBooks", produces = "application/json")
-    @Operation(summary = "Add book(s) at once", description = "See example request and add object(s) format same as example request.")
+    @Operation(summary = "Add book(s) at once", description = "See example request and add object(s) format same as example request.", tags = {"Add Books"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Books are created successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -94,7 +95,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/getBookById/{id}", produces = "application/json")
-    @Operation(summary = "Get book by id", description = "Give book id to get book")
+    @Operation(summary = "Get book by id", description = "Give book id to get book", tags = {"Get Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -106,7 +107,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/getBookByName/{name}", produces = "application/json")
-    @Operation(summary = "Get book(s) by name", description = "Give book name to get book(s)")
+    @Operation(summary = "Get book(s) by name", description = "Give book name to get book(s)", tags = { "Get Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -118,7 +119,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/getBookByPrice/{price}", produces = "application/json")
-    @Operation(summary = "Get book(s) by price", description = "Give book price to get book(s)")
+    @Operation(summary = "Get book(s) by price", description = "Give book price to get book(s)", tags = { "Get Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -130,7 +131,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/getBookByAuthor/{author_id}", produces = "application/json")
-    @Operation(summary = "Get book(s) by author id", description = "Give author id to get book(s)")
+    @Operation(summary = "Get book(s) by author id", description = "Give author id to get book(s)", tags = { "Get Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -151,7 +152,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/getBookByPublisher/{publisher_id}", produces = "application/json")
-    @Operation(summary = "Get book(s) by publisher id", description = "Give publisher id to get book(s)")
+    @Operation(summary = "Get book(s) by publisher id", description = "Give publisher id to get book(s)", tags = { "Get Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book found"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -172,7 +173,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/getAllBooks", produces = "application/json")
-    @Operation(summary = "Get all book(s)", description = "Just hit try option to get all book(s)")
+    @Operation(summary = "Get all book(s)", description = "Just hit try option to get all book(s)", tags = { "Get Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Books found"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -184,7 +185,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/deleteBook/{id}", produces = "application/json")
-    @Operation(summary = "Delete book by id", description = "Give book id to delete book")
+    @Operation(summary = "Delete book by id", description = "Give book id to delete book", tags = { "Delete Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -196,7 +197,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/deleteBookByName/{name}", produces = "application/json")
-    @Operation(summary = "Delete book(s) by name", description = "Give book name to delete book(s)")
+    @Operation(summary = "Delete book(s) by name", description = "Give book name to delete book(s)", tags = { "Delete Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -208,7 +209,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/deleteBookByPrice/{price}", produces = "application/json")
-    @Operation(summary = "Delete book(s) by price", description = "Give book price to delete book(s)")
+    @Operation(summary = "Delete book(s) by price", description = "Give book price to delete book(s)", tags = { "Delete Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -220,7 +221,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/deleteBookByAuthor/{author_id}", produces = "application/json")
-    @Operation(summary = "Delete book(s) by author id", description = "Give author id to delete book(s)")
+    @Operation(summary = "Delete book(s) by author id", description = "Give author id to delete book(s)", tags = { "Delete Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -232,7 +233,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/deleteBookByPublisher/{publisher_id}", produces = "application/json")
-    @Operation(summary = "Delete book(s) by publisher id", description = "Give publisher id to delete book(s)")
+    @Operation(summary = "Delete book(s) by publisher id", description = "Give publisher id to delete book(s)", tags = { "Delete Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -244,7 +245,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/deleteAllBooks", produces = "application/json")
-    @Operation(summary = "Delete all book(s)", description = "Just hit try option to delete all book(s)")
+    @Operation(summary = "Delete all book(s)", description = "Just hit try option to delete all book(s)", tags = { "Delete Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Books deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -256,7 +257,7 @@ public class BookController {
     }
 
     @PutMapping(value = "/updateBook/{id}", produces = "application/json")
-    @Operation(summary = "Update book by id", description = "Give book id to update book")
+    @Operation(summary = "Update book by id", description = "Give book id to update book", tags = { "Update Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book updated successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
@@ -268,7 +269,7 @@ public class BookController {
     }
 
     @PatchMapping(value = "/minorUpdateBook/{id}", produces = "application/json")
-    @Operation(summary = "Minor update book by id", description = "Give book id to do minor updates on book")
+    @Operation(summary = "Minor update book by id", description = "Give book id to do minor updates on book", tags = { "Update Book"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Book updated successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
