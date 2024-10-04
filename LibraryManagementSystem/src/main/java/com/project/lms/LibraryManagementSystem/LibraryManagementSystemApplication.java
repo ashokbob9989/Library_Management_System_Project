@@ -1,7 +1,11 @@
 package com.project.lms.LibraryManagementSystem;
 
+import com.project.lms.LibraryManagementSystem.frontend.LoginServlet;
+import com.project.lms.LibraryManagementSystem.frontend.SignupServlet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class LibraryManagementSystemApplication {
@@ -10,5 +14,16 @@ public class LibraryManagementSystemApplication {
         SpringApplication.run(LibraryManagementSystemApplication.class, args);
     }
 
-    //todo Add JUnit Test cases and try to customize swagger by html and css.
+    @Bean
+    public ServletRegistrationBean<LoginServlet> loginServlet() {
+        return new ServletRegistrationBean<>(new LoginServlet(), "/loginServlet");
+    }
+
+    @Bean
+    public ServletRegistrationBean<SignupServlet> signupServlet() {
+        return new ServletRegistrationBean<>(new SignupServlet(), "/signupServlet");
+    }
+
+    //TODO : logins with same user must not be inserted again in database
+    //TODO : signups with same credentials has to be handled (if taken then give a message that already exists)
 }
