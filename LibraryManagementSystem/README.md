@@ -38,6 +38,31 @@
 
 7. **Login Success**:
 - If the login is **successful**, the user is redirected to the **Swagger page**, which provides access to the APIs of the Library Management System.
+=======
+  - This is the main entry point of the application. It handles the initialization of controllers and servlets.
+
+2. **MainController**:
+  - The main controller routes requests to the appropriate servlets. When a user tries to log in, the request is routed to the `LoginServlet`.
+
+3. **LoginServlet**:
+  - This servlet handles user login functionality.
+  - If the user is **not signed in**, it forwards the request to the `logIn.html` page.
+  - If the user is **not registered**, the system displays a sign-up option, linking to `signUp.html`.
+
+4. **logIn.html** and **signUp.html**:
+  - `logIn.html` is shown for users attempting to log in.
+  - `signUp.html` is shown for new users who need to register.
+
+5. **script.js**:
+  - This JavaScript file handles the submission of login and signup details.
+  - It calls the appropriate servlet (either `LoginServlet` or `SignUpServlet`) to process the credentials and store them in the `login` and `signup` tables in the database.
+
+6. **Handling Login and Signup**:
+  - **LoginServlet**: Handles the login details submitted via `logIn.html`. It checks the credentials in the `login` table.
+  - **SignUpServlet**: Processes new user details submitted via `signUp.html`, and stores them in the `signup` table.
+
+7. **Login Success**:
+  - If the login is **successful**, the user is redirected to the **Swagger page**, which provides access to the APIs of the Library Management System.
 
 ---
 
@@ -46,6 +71,8 @@
 This Library Management System is built using Java and Spring Boot, designed to efficiently manage books, authors, and publishers within a library. The project leverages an Oracle database for data storage and utilizes JDBC Template for database connectivity.
 
 ### Flow for Using APIs:
+=======
+### Flow for Using APIs: 
 - **Hit the API in Swagger** -> **Test It Out** -> **Read the Instructions** -> **Give Parameters** (if required) -> **Click on Execute** -> **Observe the Response** (200 for success).
 
 ---
