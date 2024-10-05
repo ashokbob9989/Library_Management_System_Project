@@ -106,8 +106,11 @@ public class ResetPasswordServlet extends HttpServlet {
             message.setFrom(new InternetAddress("sunnydebba45221@gmail.com")); // Your email
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
             message.setSubject("Password Reset Instructions");
-            message.setText("Hello " + username + ",\n\nYour username is: " + username +
-                    "\nYour password is: " + password + "\n\nPlease keep your credentials safe.");
+            message.setText("Dear " + username + ",\n\n" +
+                    "We received a request to reset your password. If you did not request a password reset, please ignore this email.\n\n" +
+                    "If you did request a password reset, please use the following credentials to log in to your account:\n\n" +
+                    "Username: " + username + "\n" +
+                    "Password: " + password + "\n\n" + "Thank you for using our service.");
 
             // Send the message
             Transport.send(message);
