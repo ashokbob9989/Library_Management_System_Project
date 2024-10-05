@@ -1,6 +1,7 @@
 package com.project.lms.LibraryManagementSystem;
 
 import com.project.lms.LibraryManagementSystem.frontend.LoginServlet;
+import com.project.lms.LibraryManagementSystem.frontend.ResetPasswordServlet;
 import com.project.lms.LibraryManagementSystem.frontend.SignupServlet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +23,11 @@ public class LibraryManagementSystemApplication {
     @Bean
     public ServletRegistrationBean<SignupServlet> signupServlet() {
         return new ServletRegistrationBean<>(new SignupServlet(), "/signupServlet");
+    }
+
+    @Bean
+    public ServletRegistrationBean<ResetPasswordServlet> resetPasswordServlet() {
+        return new ServletRegistrationBean<>(new ResetPasswordServlet(), "/resetPasswordServlet");
     }
 
 }

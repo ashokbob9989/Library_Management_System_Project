@@ -77,6 +77,12 @@
 			<artifactId>json</artifactId>
 			<version>20240303</version>
 		</dependency>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>jakarta.mail</artifactId>
+			<version>1.6.7</version> <!-- Check for the latest version -->
+		</dependency>
+
 	</dependencies>
 
 	<build>
