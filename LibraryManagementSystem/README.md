@@ -1,7 +1,6 @@
 # Library Management System
-
-The URL to access the Library Management System is: **[http://localhost:8080/lms](http://localhost:8080/lms)**
-
+Run the project in any local IDE then go to any browser and enter the url  **[http://localhost:8080/lms](http://localhost:8080/lms)**
+follow the flows given.  
 ---
 
 ## Tech Stack
