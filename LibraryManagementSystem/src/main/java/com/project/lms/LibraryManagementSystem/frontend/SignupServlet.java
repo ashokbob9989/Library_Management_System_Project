@@ -61,37 +61,39 @@ public class SignupServlet extends HttpServlet {
             String email = jsonObject.getString("email");
             String password = jsonObject.getString("password");
 
+            resp.setContentType("application/json");
+
+            // Check if username or email already exists
             Signup existingSignupByUsername = signupRepository.findByUsername(username);
             Signup existingSignupByEmail = signupRepository.findByEmail(email);
 
-            resp.setContentType("application/json");
-
-            // Check if username is already registered
-            if (existingSignupByUsername != null) {
-                resp.getWriter().write("{\"message\": \"Username already registered. Please log in.\"}");
+            // Respond with appropriate status codes and messages
+            if (existingSignupByUsername != null && existingSignupByEmail != null && existingSignupByUsername.getPassword().equals(password)) {
+                resp.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
+                resp.getWriter().write("{\"message\": \"User already exists. Please log in or choose different credentials.\"}");
             }
-            // Check if email is already registered
             else if (existingSignupByEmail != null) {
+                resp.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
                 resp.getWriter().write("{\"message\": \"Email already registered. Please log in.\"}");
+            }
+            else if (existingSignupByUsername != null) {
+                resp.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
+                resp.getWriter().write("{\"message\": \"Username already taken. Please choose a different username.\"}");
             }
             else {
                 // Check if password is already taken
-                List<Signup> allSignups = signupRepository.findAll(); // Make sure you have this method
+                List<Signup> allSignups = signupRepository.findAll();
                 boolean passwordTaken = allSignups.stream().anyMatch(signup -> signup.getPassword().equals(password));
 
-                // Check if the username is already taken
-                boolean usernameTaken = allSignups.stream().anyMatch(signup -> signup.getUsername().equals(username));
-
-                if (usernameTaken) {
-                    resp.getWriter().write("{\"message\": \"Username already taken. Please choose a different username.\"}");
-                }
-                else if (passwordTaken) {
+                if (passwordTaken) {
+                    resp.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
                     resp.getWriter().write("{\"message\": \"Password already taken. Please choose a different password.\"}");
                 }
                 else {
                     // Create a new signup
                     Signup signup = new Signup(username, email, password);
                     signupRepository.save(signup);
+                    resp.setStatus(HttpServletResponse.SC_OK); // 200 OK
                     resp.getWriter().write("{\"message\": \"Signup successful\"}");
                 }
             }

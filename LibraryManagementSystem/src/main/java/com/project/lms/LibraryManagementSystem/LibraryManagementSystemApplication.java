@@ -24,6 +24,4 @@ public class LibraryManagementSystemApplication {
         return new ServletRegistrationBean<>(new SignupServlet(), "/signupServlet");
     }
 
-    //TODO : logins with same user must not be inserted again in database
-    //TODO : signups with same credentials has to be handled (if taken then give a message that already exists)
 }
