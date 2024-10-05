@@ -1,15 +1,15 @@
 # Library Management System
-Run the project in any local IDE then go to any browser and enter the url  **[http://localhost:8080/lms](http://localhost:8080/lms)**
-follow the flows given.  
+- Run the project in any local IDE then go to any browser and enter the url  **[http://localhost:8080/lms](http://localhost:8080/lms)**
+- signup and login to enter in Library Management System.
 ---
 
 ## Tech Stack
 - **Languages/Frameworks**: Java, Spring, Spring Boot, HTML, CSS, JavaScript
 - **Tools Used**: IntelliJ, Postman, Swagger
-
+- How to use APIs? (clear instructions are given in ##API OVERVIEW.
 ---
 
-## Flow Overview
+## Implementation details of forntend part
 
 **LibraryManagementSystemApplication** -> **MainController** -> **LoginServlet** -> **logIn.html** or **signUp.html** -> **script.js** (calls `LoginServlet` or `SignUpServlet`) -> **login/signup tables** (in database) -> **Successful Login** -> **Swagger page to access APIs**
 
@@ -41,17 +41,17 @@ follow the flows given.
 
 ---
 
-## Overview
+## API Overview
 
 This Library Management System is built using Java and Spring Boot, designed to efficiently manage books, authors, and publishers within a library. The project leverages an Oracle database for data storage and utilizes JDBC Template for database connectivity.
 
-### Flow for Using APIs:
-- **If Not Signed In**: First, sign up using the **SignUpServlet**, then log in using the **LoginServlet** to access the APIs.
+### Flow for Using APIs: 
 - **Hit the API in Swagger** -> **Test It Out** -> **Read the Instructions** -> **Give Parameters** (if required) -> **Click on Execute** -> **Observe the Response** (200 for success).
 
 ---
 
-## Project Structure
+## Implementation details of backend part
+- Model -> Controller -> Service -> Repository
 
 ### Models
 
@@ -60,26 +60,6 @@ This Library Management System is built using Java and Spring Boot, designed to 
 - **Book**: Contains attributes like `id` (primary key), `name`, `price`, etc., to represent book details.
 - **Author**: Contains attributes like `id` and `name` (composite key), `contact`, etc. This ensures unique identification in conjunction with the `id` of the Book.
 - **Publisher**: Contains attributes like `id` and `name` (composite key), `contact`, etc. This also ensures unique identification in conjunction with the `id` of the Book.
-
-### Repositories
-
-**Definition:** Repositories are responsible for data access and interaction with the database. They provide methods for performing CRUD (Create, Read, Update, Delete) operations.
-
-- **BookRepository**: Interface for accessing and managing `Book` entities in the database.
-- **AuthorRepository**: Interface for accessing and managing `Author` entities.
-- **PublisherRepository**: Interface for accessing and managing `Publisher` entities.
-
-Each repository abstracts the underlying database operations, ensuring that the data layer is isolated from the rest of the application, promoting better separation of concerns.
-
-### Services
-
-**Definition:** Services encapsulate the business logic of the application. They act as an intermediary between the controllers and repositories, handling data manipulation and processing.
-
-- **BookService**: Contains methods to manage business operations related to `Book` entities, such as validation and transaction handling.
-- **AuthorService**: Manages operations related to `Author` entities, including data processing and business rules.
-- **PublisherService**: Handles business logic for `Publisher` entities.
-
-This separation facilitates easier testing and maintenance.
 
 ### Controllers
 
@@ -94,6 +74,26 @@ This separation facilitates easier testing and maintenance.
 
 - **AuthorController**: Similar operations for managing `Author` entities.
 - **PublisherController**: Similar operations for managing `Publisher` entities.
+
+### Services
+
+**Definition:** Services encapsulate the business logic of the application. They act as an intermediary between the controllers and repositories, handling data manipulation and processing.
+
+- **BookService**: Contains methods to manage business operations related to `Book` entities, such as validation and transaction handling.
+- **AuthorService**: Manages operations related to `Author` entities, including data processing and business rules.
+- **PublisherService**: Handles business logic for `Publisher` entities.
+
+This separation facilitates easier testing and maintenance.
+
+### Repositories
+
+**Definition:** Repositories are responsible for data access and interaction with the database. They provide methods for performing CRUD (Create, Read, Update, Delete) operations.
+
+- **BookRepository**: Interface for accessing and managing `Book` entities in the database.
+- **AuthorRepository**: Interface for accessing and managing `Author` entities.
+- **PublisherRepository**: Interface for accessing and managing `Publisher` entities.
+
+Each repository abstracts the underlying database operations, ensuring that the data layer is isolated from the rest of the application, promoting better separation of concerns.
 
 ---
 
@@ -126,7 +126,7 @@ Spring Boot is used to simplify the development process through annotations like
 1. Clone the repository.
 2. Set up your Oracle database and update the connection details in `application.properties`.
 3. Run the application using your IDE or the command line.
-4. If not signed in, **sign up** using the `SignUpServlet`, then **log in** to access the system's APIs.
+4. signup and then login using  `http://localhost:8080/lms`, to access the system's APIs.
 
 ---
 
