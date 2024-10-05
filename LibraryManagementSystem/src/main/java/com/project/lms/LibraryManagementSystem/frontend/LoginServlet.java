@@ -77,20 +77,27 @@ public class LoginServlet extends HttpServlet {
             if (existingSignup != null) {
                 // Assuming password validation logic
                 if (password.equals(existingSignup.getPassword())) {
-                    Login login = new Login();
-                    login.setUsername(username);
-                    login.setPassword(password); // Consider hashing this
-                    login.setLoginDate(LocalDateTime.now());
-                    loginRepository.save(login);
-
+                    Login login = loginRepository.findByUsername(username);
+                    if (login == null) {
+                        login = new Login(username, password);
+                        login.setLoginDate(LocalDateTime.now());
+                        loginRepository.save(login);
+                    }
+                    else {
+                        login.setLoginDate(LocalDateTime.now());
+                        loginRepository.save(login);
+                    }
+                    resp.setStatus(HttpServletResponse.SC_OK);
                     resp.setContentType("application/json");
                     resp.getWriter().write("{\"message\": \"Login successful\"}");
-                } else {
+                }
+                else {
                     resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     resp.setContentType("application/json");
                     resp.getWriter().write("{\"message\": \"Incorrect password\"}");
                 }
-            } else {
+            }
+            else {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 resp.setContentType("application/json");
                 resp.getWriter().write("{\"message\": \"Username not registered\"}");

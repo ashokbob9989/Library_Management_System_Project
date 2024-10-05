@@ -24,4 +24,5 @@ public class Login {
         this.password = password;
         this.loginDate = LocalDateTime.now();
     }
+
 }
