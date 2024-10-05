@@ -38,7 +38,6 @@
 
 7. **Login Success**:
 - If the login is **successful**, the user is redirected to the **Swagger page**, which provides access to the APIs of the Library Management System.
-=======
   - This is the main entry point of the application. It handles the initialization of controllers and servlets.
 
 2. **MainController**:
@@ -70,8 +69,6 @@
 
 This Library Management System is built using Java and Spring Boot, designed to efficiently manage books, authors, and publishers within a library. The project leverages an Oracle database for data storage and utilizes JDBC Template for database connectivity.
 
-### Flow for Using APIs:
-=======
 ### Flow for Using APIs: 
 - **Hit the API in Swagger** -> **Test It Out** -> **Read the Instructions** -> **Give Parameters** (if required) -> **Click on Execute** -> **Observe the Response** (200 for success).
 
