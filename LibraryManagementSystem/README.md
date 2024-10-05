@@ -126,7 +126,7 @@ Spring Boot is used to simplify the development process through annotations like
 1. Clone the repository.
 2. Set up your Oracle database and update the connection details in `application.properties`.
 3. Run the application using your IDE or the command line.
-4. signup and then login using  `http://localhost:8080/lms`, to access the system's APIs.
+4. signup and then login using  `http://localhost:8080/lms`, to access the APIs.
 
 ---
 
