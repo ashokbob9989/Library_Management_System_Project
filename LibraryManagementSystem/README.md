@@ -6,7 +6,7 @@
 ## Tech Stack
 - **Languages/Frameworks**: Java, Spring, Spring Boot, HTML, CSS, JavaScript
 - **Tools Used**: IntelliJ, Postman, Swagger
-- How to use APIs? (clear instructions are given in ##API OVERVIEW.
+- How to use APIs? (clear instructions are given in `API OVERVIEW`.
 ---
 
 ## Implementation details of forntend part
